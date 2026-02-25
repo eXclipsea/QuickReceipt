@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Camera, User, Mail, Lock, ArrowRight } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,41 +11,32 @@ export default function Home() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple auth simulation - in real app would connect to backend
     console.log(isLogin ? 'Logging in' : 'Signing up', { email, password, name });
-    // For demo, redirect to dashboard
     window.location.href = '/dashboard';
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 transition-colors">
-      <div className="max-w-md w-full">
-        {/* Logo and Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-indigo-600 p-3 rounded-full">
-              <Camera className="w-8 h-8 text-white" />
-            </div>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="max-w-sm w-full">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <Camera className="w-6 h-6 text-cyan-400" />
+            <h1 className="text-2xl font-semibold text-white tracking-tight">QuickReceipt</h1>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">QuickReceipt</h1>
-          <p className="text-gray-700 dark:text-gray-300 mb-2">Scan and organize your receipts instantly</p>
-          <p className="text-sm text-gray-600 dark:text-gray-400">Created by Landon Li</p>
+          <p className="text-neutral-500 text-sm">Scan and organize your receipts instantly</p>
         </div>
 
         {/* Auth Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition-colors">
-          {/* Theme Toggle */}
-          <div className="flex justify-end mb-4">
-            <ThemeToggle />
-          </div>
+        <div className="rounded-xl border border-neutral-800 p-6">
           {/* Toggle */}
-          <div className="flex mb-6 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 transition-colors">
+          <div className="flex mb-6 border border-neutral-800 rounded-lg p-1">
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 isLogin 
-                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-gray-600 dark:text-indigo-400' 
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-neutral-800 text-white' 
+                  : 'text-neutral-500 hover:text-neutral-300'
               }`}
             >
               Login
@@ -55,8 +45,8 @@ export default function Home() {
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 !isLogin 
-                  ? 'bg-white text-indigo-600 shadow-sm dark:bg-gray-600 dark:text-indigo-400' 
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+                  ? 'bg-neutral-800 text-white' 
+                  : 'text-neutral-500 hover:text-neutral-300'
               }`}
             >
               Sign Up
@@ -67,14 +57,14 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                <label className="block text-xs font-medium text-neutral-500 mb-1.5">Name</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  <User className="absolute left-3 top-2.5 w-4 h-4 text-neutral-600" />
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+                    className="w-full pl-10 pr-3 py-2 bg-transparent border border-neutral-800 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none text-sm placeholder-neutral-600"
                     placeholder="Your name"
                     required={!isLogin}
                   />
@@ -83,14 +73,14 @@ export default function Home() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Email</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                <Mail className="absolute left-3 top-2.5 w-4 h-4 text-neutral-600" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+                  className="w-full pl-10 pr-3 py-2 bg-transparent border border-neutral-800 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none text-sm placeholder-neutral-600"
                   placeholder="your@email.com"
                   required
                 />
@@ -98,14 +88,14 @@ export default function Home() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                <Lock className="absolute left-3 top-2.5 w-4 h-4 text-neutral-600" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+                  className="w-full pl-10 pr-3 py-2 bg-transparent border border-neutral-800 text-white rounded-lg focus:border-cyan-400/50 focus:outline-none text-sm placeholder-neutral-600"
                   placeholder="••••••••"
                   required
                 />
@@ -114,7 +104,7 @@ export default function Home() {
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full bg-cyan-500 hover:bg-cyan-600 text-black font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
             >
               {isLogin ? 'Login' : 'Sign Up'}
               <ArrowRight className="w-4 h-4" />
@@ -122,21 +112,18 @@ export default function Home() {
           </form>
 
           {/* Demo Note */}
-          <div className="mt-6 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg transition-colors">
-            <p className="text-xs text-blue-600 dark:text-blue-400 text-center">
+          <div className="mt-5 p-3 rounded-lg border border-neutral-800">
+            <p className="text-xs text-neutral-500 text-center">
               Demo: Click any button to continue to the app
             </p>
           </div>
         </div>
 
-        {/* Features Preview */}
+        {/* Footer */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">Simple features for receipt management:</p>
-          <div className="flex justify-center gap-6 text-xs text-gray-600 dark:text-gray-400">
-            <div>📸 Scan Receipts</div>
-            <div>💾 Save Locally</div>
-            <div>📊 View History</div>
-          </div>
+          <p className="text-xs text-neutral-600">
+            Built by Landon Li
+          </p>
         </div>
       </div>
     </div>

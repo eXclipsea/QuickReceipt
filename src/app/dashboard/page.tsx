@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Camera, Upload, Loader2, Receipt, DollarSign, LogOut, TrendingUp, MapPin, Download, Store, Calendar, BarChart3, PieChart } from 'lucide-react';
-import ThemeToggle from '@/components/ThemeToggle';
 import * as XLSX from 'xlsx';
 
 interface ReceiptData {
@@ -279,7 +278,7 @@ export default function Dashboard() {
     
     // Categories sheet
     const categoriesData = Object.entries(analytics.categoryTotals).map(([category, total]) => ({
-      Category,
+      Category: category,
       Total: total
     }));
     const categoriesWS = XLSX.utils.json_to_sheet(categoriesData);
@@ -314,134 +313,95 @@ export default function Dashboard() {
   const analytics = calculateAnalytics();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="border-b border-neutral-800">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="bg-indigo-600 p-2 rounded-full">
-              <Receipt className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">QuickReceipt</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Welcome back!</p>
-            </div>
+            <Receipt className="w-5 h-5 text-cyan-400" />
+            <h1 className="text-lg font-semibold tracking-tight">QuickReceipt</h1>
           </div>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="text-sm">Logout</span>
-            </button>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-neutral-500 hover:text-white transition-colors text-sm"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
+      <div className="max-w-5xl mx-auto px-6 py-8">
         {/* Tab Navigation */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm mb-6 border border-gray-200 dark:border-gray-700 transition-colors">
-          <div className="flex flex-wrap gap-2 p-2">
-            {[
-              { id: 'overview', label: 'Overview', icon: Receipt },
-              { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-              { id: 'savings', label: 'Savings', icon: Store },
-              { id: 'insights', label: 'Insights', icon: PieChart },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as TabType)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-indigo-600 text-white'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
-              >
-                <tab.icon className="w-4 h-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        <div className="flex gap-1 mb-8 border-b border-neutral-800">
+          {[
+            { id: 'overview', label: 'Overview', icon: Receipt },
+            { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+            { id: 'savings', label: 'Savings', icon: Store },
+            { id: 'insights', label: 'Insights', icon: PieChart },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as TabType)}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+                activeTab === tab.id
+                  ? 'border-cyan-400 text-white'
+                  : 'border-transparent text-neutral-500 hover:text-neutral-300'
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Total Spent</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                      ${savedReceipts.reduce((sum, r) => sum + r.totalAmount, 0).toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-full">
-                    <DollarSign className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="rounded-xl border border-neutral-800 p-4">
+                <p className="text-xs text-neutral-500 mb-1">Total Spent</p>
+                <p className="text-xl font-semibold text-cyan-400">
+                  ${savedReceipts.reduce((sum, r) => sum + r.totalAmount, 0).toFixed(2)}
+                </p>
               </div>
-              
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">This Month</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">${analytics.monthly.toFixed(2)}</p>
-                  </div>
-                  <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
-                    <Calendar className="w-6 h-6 text-green-600 dark:text-green-400" />
-                  </div>
-                </div>
+              <div className="rounded-xl border border-neutral-800 p-4">
+                <p className="text-xs text-neutral-500 mb-1">This Month</p>
+                <p className="text-xl font-semibold">${analytics.monthly.toFixed(2)}</p>
               </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border border-gray-200 dark:border-gray-700 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Total Receipts</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{savedReceipts.length}</p>
-                  </div>
-                  <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
-                    <Receipt className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                </div>
+              <div className="rounded-xl border border-neutral-800 p-4">
+                <p className="text-xs text-neutral-500 mb-1">Total Receipts</p>
+                <p className="text-xl font-semibold">{savedReceipts.length}</p>
               </div>
             </div>
 
             {/* Upload Section */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 transition-colors">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Scan Receipt</h2>
+            <div className="rounded-xl border border-neutral-800 p-6">
+              <h2 className="text-sm font-medium mb-4">Scan Receipt</h2>
               
-              {/* Photo Instructions */}
-              <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">📸 Photo Guidelines:</h3>
-                <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                  <p>✅ <strong>Show:</strong> Store name, address, date, items purchased, and total amount</p>
-                  <p>❌ <strong>Hide:</strong> Order numbers, approval codes, and last 4 digits of cards</p>
-                  <p>💡 <strong>Tip:</strong> Ensure good lighting and capture the entire receipt</p>
-                </div>
+              <div className="mb-4 p-3 rounded-lg border border-neutral-800">
+                <p className="text-xs text-neutral-500">Show store name, date, items, and total. Ensure good lighting.</p>
               </div>
               
-              <div className="text-center">
+              <div>
                 <button
                   onClick={handleCameraCapture}
                   disabled={isLoading}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-colors mb-4"
+                  className="w-full bg-cyan-500 hover:bg-cyan-600 disabled:bg-neutral-800 disabled:text-neutral-500 text-black font-medium py-2.5 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors mb-3 text-sm"
                 >
                   {isLoading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
-                    <Camera className="w-5 h-5" />
+                    <Camera className="w-4 h-4" />
                   )}
-                  {isLoading ? 'Scanning...' : '📸 Take Photo of Receipt'}
+                  {isLoading ? 'Scanning...' : 'Take Photo of Receipt'}
                 </button>
 
                 <button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isLoading}
-                  className="w-full bg-gray-100 hover:bg-gray-200 disabled:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+                  className="w-full border border-neutral-800 hover:bg-neutral-900 text-neutral-400 font-medium py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors text-sm"
                 >
                   <Upload className="w-4 h-4" />
                   Choose from Gallery
@@ -457,43 +417,39 @@ export default function Dashboard() {
                 />
 
                 {error && (
-                  <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg transition-colors">
-                    <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                  <div className="mt-3 p-3 rounded-lg border border-red-400/20">
+                    <p className="text-red-400 text-sm">{error}</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Recent Receipts */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 transition-colors">
+            <div className="rounded-xl border border-neutral-800 p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Receipts</h2>
-                <span className="text-sm text-gray-500 dark:text-gray-400">{savedReceipts.length} total</span>
+                <h2 className="text-sm font-medium">Recent Receipts</h2>
+                <span className="text-xs text-neutral-500">{savedReceipts.length} total</span>
               </div>
               
               {savedReceipts.length === 0 ? (
-                <div className="text-center py-8">
-                  <Receipt className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                  <p className="text-gray-500 dark:text-gray-400">No receipts yet</p>
-                  <p className="text-sm text-gray-400 dark:text-gray-500">Upload your first receipt to get started</p>
+                <div className="text-center py-12">
+                  <Receipt className="w-10 h-10 text-neutral-700 mx-auto mb-3" />
+                  <p className="text-neutral-500 text-sm">No receipts yet</p>
+                  <p className="text-xs text-neutral-600 mt-1">Upload your first receipt to get started</p>
                 </div>
               ) : (
-                <div className="space-y-3 max-h-96 overflow-y-auto">
+                <div className="space-y-2 max-h-96 overflow-y-auto">
                   {savedReceipts.slice(-10).reverse().map((receipt) => (
-                    <div key={receipt.id} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                    <div key={receipt.id} className="rounded-lg border border-neutral-800 p-3 hover:bg-neutral-950 transition-colors">
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">{receipt.merchantName}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{receipt.date}</p>
-                          <div className="flex gap-2 mt-1">
-                            <span className="inline-block px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-md transition-colors">
-                              {receipt.category}
-                            </span>
-                          </div>
+                          <p className="text-sm font-medium">{receipt.merchantName}</p>
+                          <p className="text-xs text-neutral-500 mt-0.5">{receipt.date}</p>
+                          <span className="inline-block mt-1 px-2 py-0.5 border border-neutral-800 text-neutral-500 text-xs rounded">
+                            {receipt.category}
+                          </span>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-lg text-gray-900 dark:text-white">${receipt.totalAmount.toFixed(2)}</p>
-                        </div>
+                        <p className="font-medium text-sm">${receipt.totalAmount.toFixed(2)}</p>
                       </div>
                     </div>
                   ))}
@@ -505,54 +461,54 @@ export default function Dashboard() {
 
         {/* Analytics Tab */}
         {activeTab === 'analytics' && (
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 transition-colors">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-neutral-800 p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Spending Analytics</h2>
+                <h2 className="text-sm font-medium">Spending Analytics</h2>
                 <button
                   onClick={exportToExcel}
-                  className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-black rounded-lg transition-colors text-xs font-medium"
                 >
-                  <Download className="w-4 h-4" />
-                  Export to Excel
+                  <Download className="w-3.5 h-3.5" />
+                  Export
                 </button>
               </div>
 
               {/* Time Period Analytics */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Weekly</p>
-                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">${analytics.weekly.toFixed(2)}</p>
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="text-center p-4 rounded-lg border border-neutral-800">
+                  <p className="text-xs text-neutral-500 mb-1">Weekly</p>
+                  <p className="text-lg font-semibold text-cyan-400">${analytics.weekly.toFixed(2)}</p>
                 </div>
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Monthly</p>
-                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">${analytics.monthly.toFixed(2)}</p>
+                <div className="text-center p-4 rounded-lg border border-neutral-800">
+                  <p className="text-xs text-neutral-500 mb-1">Monthly</p>
+                  <p className="text-lg font-semibold">${analytics.monthly.toFixed(2)}</p>
                 </div>
-                <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Yearly</p>
-                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">${analytics.yearly.toFixed(2)}</p>
+                <div className="text-center p-4 rounded-lg border border-neutral-800">
+                  <p className="text-xs text-neutral-500 mb-1">Yearly</p>
+                  <p className="text-lg font-semibold">${analytics.yearly.toFixed(2)}</p>
                 </div>
               </div>
 
               {/* Category Breakdown */}
               <div className="mb-6">
-                <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">Spending by Category</h3>
+                <h3 className="text-xs font-medium text-neutral-500 mb-3">Spending by Category</h3>
                 <div className="space-y-2">
                   {Object.entries(analytics.categoryTotals)
                     .sort(([,a], [,b]) => b - a)
                     .map(([category, total]) => {
                       const percentage = (total / savedReceipts.reduce((sum, r) => sum + r.totalAmount, 0)) * 100;
                       return (
-                        <div key={category} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                          <span className="font-medium text-gray-900 dark:text-white">{category}</span>
+                        <div key={category} className="flex items-center justify-between p-3 rounded-lg border border-neutral-800">
+                          <span className="text-sm">{category}</span>
                           <div className="flex items-center gap-3">
-                            <div className="w-24 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                            <div className="w-20 bg-neutral-800 rounded-full h-1.5">
                               <div 
-                                className="bg-indigo-600 h-2 rounded-full" 
+                                className="bg-cyan-400 h-1.5 rounded-full" 
                                 style={{ width: `${percentage}%` }}
                               />
                             </div>
-                            <span className="text-sm font-semibold text-gray-900 dark:text-white w-20 text-right">
+                            <span className="text-xs font-medium w-16 text-right">
                               ${total.toFixed(2)}
                             </span>
                           </div>
@@ -564,15 +520,15 @@ export default function Dashboard() {
 
               {/* Top Merchants */}
               <div>
-                <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">Most Visited Stores</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <h3 className="text-xs font-medium text-neutral-500 mb-3">Most Visited Stores</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {Object.entries(analytics.merchantCounts)
                     .sort(([,a], [,b]) => b - a)
                     .slice(0, 6)
                     .map(([merchant, count]) => (
-                      <div key={merchant} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                        <span className="font-medium text-gray-900 dark:text-white">{merchant}</span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">{count} visits</span>
+                      <div key={merchant} className="flex justify-between items-center p-3 rounded-lg border border-neutral-800">
+                        <span className="text-sm">{merchant}</span>
+                        <span className="text-xs text-neutral-500">{count} visits</span>
                       </div>
                     ))}
                 </div>
@@ -583,15 +539,15 @@ export default function Dashboard() {
 
         {/* Savings Tab */}
         {activeTab === 'savings' && (
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 transition-colors">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Find Better Prices</h2>
+          <div className="space-y-4">
+            <div className="rounded-xl border border-neutral-800 p-6">
+              <h2 className="text-sm font-medium mb-4">Find Better Prices</h2>
 
               <div className="text-center mb-6">
                 <button
                   onClick={searchNearbyStores}
                   disabled={isAnalyzing}
-                  className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 mx-auto transition-colors"
+                  className="bg-cyan-500 hover:bg-cyan-600 disabled:bg-neutral-800 disabled:text-neutral-500 text-black font-medium py-2.5 px-5 rounded-lg flex items-center justify-center gap-2 mx-auto transition-colors text-sm"
                 >
                   {isAnalyzing ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -602,28 +558,26 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              {/* Disclaimer */}
-              <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
-                  <strong>Disclaimer:</strong> Price comparison feature is not 100% accurate as stores may not disclose all pricing information in real-time. Always verify prices at the store before making purchases.
+              <div className="mb-6 p-3 rounded-lg border border-neutral-800">
+                <p className="text-xs text-neutral-500">
+                  Price comparison is approximate. Always verify prices at the store.
                 </p>
               </div>
 
-              {/* Nearby Stores Results */}
               {nearbyStores.length > 0 && (
                 <div>
-                  <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">Nearby Store Prices</h3>
-                  <div className="space-y-3">
+                  <h3 className="text-xs font-medium text-neutral-500 mb-3">Nearby Store Prices</h3>
+                  <div className="space-y-2">
                     {nearbyStores.map((store, index) => (
-                      <div key={index} className="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                      <div key={index} className="flex justify-between items-center p-4 rounded-lg border border-neutral-800">
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">{store.store}</p>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{store.distance}</p>
+                          <p className="text-sm font-medium">{store.store}</p>
+                          <p className="text-xs text-neutral-500">{store.distance}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-lg font-bold text-green-600 dark:text-green-400">${store.price.toFixed(2)}</p>
+                          <p className="font-medium text-cyan-400">${store.price.toFixed(2)}</p>
                           {index === 0 && (
-                            <p className="text-xs text-green-600 dark:text-green-400">Best Price!</p>
+                            <p className="text-xs text-cyan-400">Best Price</p>
                           )}
                         </div>
                       </div>
@@ -637,76 +591,72 @@ export default function Dashboard() {
 
         {/* Insights Tab */}
         {activeTab === 'insights' && (
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 transition-colors">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Shopping Insights</h2>
+          <div className="space-y-4">
+            <div className="rounded-xl border border-neutral-800 p-6">
+              <h2 className="text-sm font-medium mb-4">Shopping Insights</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Top Category */}
-                <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Top Spending Category</h3>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="p-4 rounded-lg border border-neutral-800">
+                  <h3 className="text-xs text-neutral-500 mb-1">Top Spending Category</h3>
+                  <p className="font-medium">
                     {Object.keys(analytics.categoryTotals)[0] || 'N/A'}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-neutral-500 mt-0.5">
                     ${Object.values(analytics.categoryTotals)[0]?.toFixed(2) || '0.00'} total
                   </p>
                 </div>
 
-                {/* Average Purchase */}
-                <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Average Purchase</h3>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                <div className="p-4 rounded-lg border border-neutral-800">
+                  <h3 className="text-xs text-neutral-500 mb-1">Average Purchase</h3>
+                  <p className="font-medium">
                     ${savedReceipts.length > 0 
                       ? (savedReceipts.reduce((sum, r) => sum + r.totalAmount, 0) / savedReceipts.length).toFixed(2)
                       : '0.00'
                     }
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Per receipt</p>
+                  <p className="text-xs text-neutral-500 mt-0.5">Per receipt</p>
                 </div>
 
-                {/* Shopping Frequency */}
-                <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Shopping Frequency</h3>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                <div className="p-4 rounded-lg border border-neutral-800">
+                  <h3 className="text-xs text-neutral-500 mb-1">Shopping Frequency</h3>
+                  <p className="font-medium">
                     {analytics.monthly > 0 ? Math.round(analytics.monthly / (savedReceipts.reduce((sum, r) => sum + r.totalAmount, 0) / savedReceipts.length || 1)) : 0}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Trips per month</p>
+                  <p className="text-xs text-neutral-500 mt-0.5">Trips per month</p>
                 </div>
 
-                {/* Budget Status */}
-                <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg">
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Monthly Budget Status</h3>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">
+                <div className="p-4 rounded-lg border border-neutral-800">
+                  <h3 className="text-xs text-neutral-500 mb-1">Monthly Budget Status</h3>
+                  <p className="font-medium">
                     ${analytics.monthly.toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Spent this month</p>
+                  <p className="text-xs text-neutral-500 mt-0.5">Spent this month</p>
                 </div>
               </div>
 
               {/* Recommendations */}
               <div className="mt-6">
-                <h3 className="text-md font-semibold text-gray-900 dark:text-white mb-3">💡 Recommendations</h3>
-                <div className="space-y-3">
+                <h3 className="text-xs font-medium text-neutral-500 mb-3">Recommendations</h3>
+                <div className="space-y-2">
                   {analytics.monthly > 500 && (
-                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 rounded">
-                      <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                        Consider setting a monthly budget to manage spending in your top category: {Object.keys(analytics.categoryTotals)[0]}
+                    <div className="p-3 rounded-lg border border-orange-400/20">
+                      <p className="text-sm text-neutral-400">
+                        Consider setting a monthly budget for: {Object.keys(analytics.categoryTotals)[0]}
                       </p>
                     </div>
                   )}
                   
                   {Object.keys(analytics.merchantCounts).length > 0 && (
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 rounded">
-                      <p className="text-sm text-blue-800 dark:text-blue-200">
-                        You shop most frequently at {Object.keys(analytics.merchantCounts)[0]}. Consider checking their loyalty program for additional savings.
+                    <div className="p-3 rounded-lg border border-cyan-400/20">
+                      <p className="text-sm text-neutral-400">
+                        You shop most at {Object.keys(analytics.merchantCounts)[0]}. Check their loyalty program.
                       </p>
                     </div>
                   )}
 
-                  <div className="p-3 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-400 rounded">
-                    <p className="text-sm text-green-800 dark:text-green-200">
-                      Great job tracking your receipts! Keep using the app to maximize your savings insights.
+                  <div className="p-3 rounded-lg border border-green-400/20">
+                    <p className="text-sm text-neutral-400">
+                      Keep tracking receipts to maximize savings insights.
                     </p>
                   </div>
                 </div>
