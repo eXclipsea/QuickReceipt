@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Camera, User, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Camera, User, Mail, Lock, ArrowRight, Download } from 'lucide-react';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
@@ -26,6 +26,18 @@ export default function Home() {
           </div>
           <p className="text-neutral-500 text-sm">Scan and organize your receipts instantly</p>
         </div>
+
+        {/* Download Banner */}
+        <a
+          href="https://github.com/eXclipsea/QuickReceipt/releases/download/v0.1.0/QuickReceipt_0.1.0_aarch64.dmg"
+          className="flex items-center justify-between p-3 mb-6 rounded-lg border border-cyan-400/20 hover:bg-cyan-400/5 transition-colors"
+        >
+          <span className="text-sm text-neutral-400">Get the Mac app</span>
+          <span className="flex items-center gap-1.5 text-xs font-medium text-cyan-400">
+            <Download className="w-3.5 h-3.5" />
+            Download .dmg
+          </span>
+        </a>
 
         {/* Auth Card */}
         <div className="rounded-xl border border-neutral-800 p-6">
