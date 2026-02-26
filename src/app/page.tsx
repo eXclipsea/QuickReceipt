@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Camera, User, Mail, Lock, ArrowRight, Download } from 'lucide-react';
+import { Camera, User, Mail, Lock, ArrowRight, Download, X } from 'lucide-react';
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState(true);
+  const [showBanner, setShowBanner] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -17,6 +18,28 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      {/* Download Popup */}
+      {showBanner && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-cyan-500/10 backdrop-blur-xl border-b border-cyan-400/20">
+          <div className="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between">
+            <a
+              href="https://github.com/eXclipsea/QuickReceipt/releases/download/v0.1.0/QuickReceipt_0.1.0_aarch64.dmg"
+              className="flex items-center gap-2 text-[13px] text-white/80 hover:text-white transition-colors"
+            >
+              <Download className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Get <strong>QuickReceipt</strong> for Mac</span>
+              <span className="text-cyan-400 font-medium ml-1">Download &rarr;</span>
+            </a>
+            <button
+              onClick={() => setShowBanner(false)}
+              className="text-white/30 hover:text-white/60 transition-colors p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-sm w-full">
         {/* Header */}
         <div className="mb-8">
@@ -26,18 +49,6 @@ export default function Home() {
           </div>
           <p className="text-neutral-500 text-sm">Scan and organize your receipts instantly</p>
         </div>
-
-        {/* Download Banner */}
-        <a
-          href="https://github.com/eXclipsea/QuickReceipt/releases/download/v0.1.0/QuickReceipt_0.1.0_aarch64.dmg"
-          className="flex items-center justify-between p-3 mb-6 rounded-lg border border-cyan-400/20 hover:bg-cyan-400/5 transition-colors"
-        >
-          <span className="text-sm text-neutral-400">Get the Mac app</span>
-          <span className="flex items-center gap-1.5 text-xs font-medium text-cyan-400">
-            <Download className="w-3.5 h-3.5" />
-            Download .dmg
-          </span>
-        </a>
 
         {/* Auth Card */}
         <div className="rounded-xl border border-neutral-800 p-6">
